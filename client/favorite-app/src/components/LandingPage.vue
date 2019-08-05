@@ -20,6 +20,7 @@
 <script>
 import Section from '@/components/Favorite/Section'
 import Footer from '@/components/Favorite/Footer'
+
 export default {
   name: 'LandingPage',
   components: {
