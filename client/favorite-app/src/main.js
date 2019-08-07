@@ -9,6 +9,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
+import VeeValidate from 'vee-validate'
+// import plugin
+import VueToastr from 'vue-toastr'
 
 const httpLink = new HttpLink({
   // URL to graphql server, you should use an absolute URL here
@@ -21,6 +24,11 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache()
 })
 
+// use plugin
+Vue.use(VueToastr, {
+  /* OverWrite Plugin Options if you need */
+})
+
 // install the vue plugin
 Vue.use(VueApollo)
 /* eslint-disable no-new */
@@ -29,6 +37,8 @@ const apolloProvider = new VueApollo({
 })
 
 Vue.use(VueMaterial)
+
+Vue.use(VeeValidate)
 
 Vue.config.productionTip = false
 

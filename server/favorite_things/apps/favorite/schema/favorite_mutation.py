@@ -40,7 +40,7 @@ class CreateFavorite(graphene.Mutation):
         title = graphene.String(required=True)
         ranking = graphene.Int(required=True)
         description = graphene.String()
-        metadata = graphene.JSONString()
+        metadata = graphene.List(graphene.JSONString)
         category = graphene.String(required=True)
 
     errors = graphene.List(graphene.String)
@@ -60,12 +60,19 @@ class CreateFavorite(graphene.Mutation):
             ranking=kwargs.get('ranking'),
             category=category_instance
         )
+        if favorite.ranking == 1:
+            for fav in category_instance.favorite.all():
+                if favorite == fav:
+                    continue
+                fav.ranking += 1
+                fav.save()
+
         if metadata:
-            for key, value in metadata.items():
+            for key in metadata:
                 metadata_instance = MetaData()
                 if key is not None:
-                    metadata_instance.key = key
-                    metadata_instance.value = value
+                    metadata_instance.key = key['name']
+                    metadata_instance.value = key['content']
                 metadata_instance.favorite = favorite
                 metadata_instance.save()
 
@@ -90,7 +97,6 @@ class UpdateFavorite(graphene.Mutation):
     errors = graphene.List(graphene.String)
     message = graphene.List(graphene.String)
 
-    @favorite_validation
     def mutate(self, info, **kwargs):
         id = kwargs.get('id')
         category = kwargs.get('category')

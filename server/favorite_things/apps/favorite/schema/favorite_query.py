@@ -1,7 +1,8 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from favorite_things.apps.favorite.models import AuditLog, Category, Favorite
+from favorite_things.apps.favorite.models import (
+    AuditLog, Category, Favorite, MetaData)
 from favorite_things.utils.database import get_model_object
 from favorite_things.utils.error_handler import errors
 
@@ -16,9 +17,19 @@ class AuditLogType(DjangoObjectType):
         model = AuditLog
 
 
+class MetaDataType(DjangoObjectType):
+    class Meta:
+        model = MetaData
+
+
 class FavoriteType(DjangoObjectType):
+    metadata = MetaDataType
+
     class Meta:
         model = Favorite
+
+    def resolve_metadata(self, info, **kwargs):
+        return MetaData.objects.get(favorite=self)
 
 
 class Query(graphene.ObjectType):

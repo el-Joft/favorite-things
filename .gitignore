@@ -106,3 +106,7 @@ venv.bak/
 ./idea
 
 *./idea/
+
+./client/favorite-app/package-lock.json
+
+.vscode/
