@@ -1,0 +1,11 @@
+{
+    "dev": {
+        "django_settings": "favorite_things.settings",
+        "profile_name": "default",
+        "project_name": "server",
+        "runtime": "python3.7",
+        "s3_bucket": "favorite-app",
+        "aws_region": "us-east-2",
+        "exclude": ["*.gz", "*.rar", "htmlcov/", "*.coverage", "*.tox"]
+    }
+}

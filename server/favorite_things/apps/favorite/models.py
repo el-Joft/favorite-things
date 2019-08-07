@@ -13,7 +13,6 @@ class Category(models.Model):
 
 
 class Favorite(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=100, null=False, blank=False)
     description = models.TextField(
         max_length=7000)
@@ -31,7 +30,6 @@ class MetaData(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     key = models.CharField(max_length=200, blank=True, null=True)
     value = models.CharField(max_length=200, blank=True, null=True)
-    data_type = models.CharField(max_length=200, blank=True, null=True)
     favorite = models.ForeignKey(Favorite, null=True, on_delete=models.CASCADE)
 
     def __str__(self):

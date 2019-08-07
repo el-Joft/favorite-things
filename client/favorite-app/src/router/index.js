@@ -7,6 +7,7 @@ import Categories from '@/components/Category/Categories'
 import Favorites from '@/components/Favorite/Favorites'
 import Favorite from '@/components/Favorite/EachFavorite'
 import AddFavorite from '@/components/Favorite/AddFavorite'
+import UpdateFavorite from '@/components/Favorite/UpdateFavorite'
 import AuditLog from '@/components/Audit/AuditLog'
 
 Vue.use(Router)
@@ -19,7 +20,7 @@ export default new Router({
       component: LandingPage
     },
     {
-      path: '/category',
+      path: '/category/:id',
       name: 'EachCategory',
       component: EachCategory
     },
@@ -37,6 +38,11 @@ export default new Router({
       path: '/add_favorite',
       name: 'AddFavorite',
       component: AddFavorite
+    },
+    {
+      path: '/edit_favorite/:id',
+      name: 'UpdateFavorite',
+      component: UpdateFavorite
     },
     {
       path: '/favorite/:id',

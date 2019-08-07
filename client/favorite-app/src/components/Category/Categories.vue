@@ -4,10 +4,8 @@
       <h2>Categories</h2>
     </div>
     <div class="container">
-      <div class="row">
-        <CategoryCard />
-        <CategoryCard />
-        <CategoryCard />
+      <div class="row" v-for="category in categories" :key="category.id">
+        <CategoryCard :propCat="category"/>
       </div>
     </div>
   </div>
@@ -15,10 +13,26 @@
 
 <script>
 import CategoryCard from '@/components/Favorite/Card'
+import { ALL_CATEGORIES } from '@/graphql'
+
 export default {
   name: 'Card',
+  mounted () { },
+  props: {
+    categoryObject: this.category
+  },
   components: {
     CategoryCard
+  },
+  data () {
+    return {
+      categories: []
+    }
+  },
+  apollo: {
+    categories: {
+      query: ALL_CATEGORIES
+    }
   }
 }
 </script>
