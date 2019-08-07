@@ -3,20 +3,34 @@
     <div class="section-head">
       <h2>Favorites</h2>
     </div>
-    <div class="row">
-      <Cards />
-      <Cards />
-      <Cards />
+    <div  v-for="favorite in favorites.slice(0, 6)" :key="favorite.id" class="row">
+      <Cards :propFav="favorite"/>
     </div>
   </div>
 </template>
 
 <script>
 import Cards from '@/components/Favorite/Card'
+
+import { ALL_FAVORITE_QUERY } from '@/graphql'
+
 export default {
   name: 'Card',
+  props: {
+    FavoriteObject: this.favorite
+  },
   components: {
     Cards
+  },
+  data () {
+    return {
+      favorites: []
+    }
+  },
+  apollo: {
+    favorites: {
+      query: ALL_FAVORITE_QUERY
+    }
   }
 }
 </script>

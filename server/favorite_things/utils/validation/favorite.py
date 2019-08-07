@@ -9,7 +9,7 @@ class FavoriteValidation:
     This class contains methods to help with validating Favorite.
     """
 
-    def __call__(self, func): # noqa
+    def __call__(self, func):  # noqa
         @wraps(func)
         def wrapper(*args, **kwargs):
             valid_type = ['int', 'str', 'datetime', 'list']
@@ -22,22 +22,21 @@ class FavoriteValidation:
                 if field == 'category':
                     if field_value.strip() == '':
                         invalid_errors.append('category cannot be empty')
-                if field == 'description':
-                    if field_value.strip() == '':
-                        invalid_errors.append('Description cannot be empty')
                 if field == 'ranking':
                     if field_value < 1:
                         invalid_errors.append('Ranking cannot be zero or less')
                 if field == 'metadata':
-                    for key, value in field_value.items():
-                        data_type = type(value)
+                    for index in field_value:
+                        data_type = type(index['content'])
                         if data_type.__name__ not in valid_type:
                             invalid_errors.append(
                                 'data can only Number, Text, Date and Enum'
                             )
+
             if len(invalid_errors) >= 1:
                 errors.custom_message(invalid_errors)
             return func(*args, **kwargs)
+
         return wrapper
 
 

@@ -1,93 +1,64 @@
 <template>
-  <div class="add-category">
-    <form novalidate class="md-layout" @submit.prevent="validateUser">
-      <md-card class="md-layout-item md-size-75 md-small-size-100">
-        <md-card-header>
-          <div class="md-title">Create Category</div>
-        </md-card-header>
-
-        <md-card-content>
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('categoryName')">
-                <label for="category-name">Category Name</label>
-                <md-input name="category-name" id="category-name" autocomplete="given-name" v-model="form.categoryName" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.categoryName.required">The Category name is required</span>
-                <span class="md-error" v-else-if="!$v.form.categoryName.minlength">Invalid Category name</span>
-              </md-field>
-            </div>
-          </div>
-        </md-card-content>
-
-        <md-progress-bar md-mode="indeterminate" v-if="sending" />
-
-        <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="sending">Create Category</md-button>
-        </md-card-actions>
-      </md-card>
-
-      <md-snackbar :md-active.sync="categorySaved">The Category was saved with success!</md-snackbar>
+  <div class="add-favorite">
+    <div class="row" v-for="(error, index) in data_errors" :key="index">
+      <div class="alert alert-danger col-md-3" role="alert">
+        <p style="color:red">{{ error }}</p>
+      </div>
+    </div>
+    <form @submit.prevent="createCategory">
+      <div class="form-group">
+        <label for="name">Category Name</label>
+        <input v-validate="'required'" name="name" type="text" class="form-control" id="name" v-model="name"  aria-describedby="nameHelp" placeholder="Enter your category here">
+        <small id="titleHelp" class="form-text text-muted">Category Title</small>
+        <i v-show="errors.has('name')" class="fa fa-warning"></i>
+        <span class="help is-danger">{{ errors.first('name') }}</span>
+      </div>
+      <button type="submit" class="btn favorite-btn btn-primary" >Submit</button>
     </form>
   </div>
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
 import {
-  required,
-  minLength
-} from 'vuelidate/lib/validators'
+  CREATE_CATEGORY_MUTATION,
+  ALL_CATEGORIES
+} from '@/graphql'
 
 export default {
-  name: 'FormValidation',
-  mixins: [validationMixin],
-  data: () => ({
-    form: {
-      categoryName: null
-    },
-    categorySaved: false,
-    sending: false,
-    lastUser: null
-  }),
-  validations: {
-    form: {
-      categoryName: {
-        required,
-        minLength: minLength(3)
-      }
+  name: 'createCategory',
+  data () {
+    return {
+      name: '',
+      data_errors: []
     }
   },
   methods: {
-    getValidationClass (fieldName) {
-      const field = this.$v.form[fieldName]
+    async createCategory () {
+      await this.$validator.validateAll().then(result => {
+        if (result) {
+          this.$apollo
+            .mutate({
+              mutation: CREATE_CATEGORY_MUTATION,
+              variables: {
+                name: this.name
+              },
+              update: (store, { data: { createCategory } }) => {
+                const data = store.readQuery({ query: ALL_CATEGORIES })
 
-      if (field) {
-        return {
-          'md-invalid': field.$invalid && field.$dirty
+                data.categories.push(createCategory)
+                store.writeQuery({ query: ALL_CATEGORIES, data })
+              }
+            })
+            .then(response => {
+              this.$router.replace('/categories')
+            })
+            .catch(error => {
+              this.data_errors.push(error.message.split(':')[1].trim())
+              // We restore the initial user input
+              // this.newFavorite = newFavorite;
+            })
         }
-      }
-    },
-    clearForm () {
-      this.$v.$reset()
-      this.form.categoryName = null
-    },
-    saveUser () {
-      this.sending = true
-
-      // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        this.lastUser = `${this.form.categoryName} ${this.form.categoryName}`
-        this.userSaved = true
-        this.sending = false
-        this.clearForm()
-      }, 1500)
-    },
-    validateUser () {
-      this.$v.$touch()
-
-      if (!this.$v.$invalid) {
-        this.saveUser()
-      }
+      })
     }
   }
 }
@@ -97,22 +68,31 @@ export default {
   form {
     font-family: 'Capriola', sans-serif;
   }
-  .add-category {
-    text-align: center;
-    margin-left: 250px;
-    margin-top: 40px;
+  .add-favorite {
+    margin: 60px;
+    width: 80%;
   }
   .md-error {
     color: #ff0000;
   }
-  .md-primary {
+  .favorite-btn {
     color: #ffffff!important;
     background: #307d7f!important;
+    border-color: #307d7f!important;
   }
   .md-progress-bar {
     position: absolute;
     top: 0;
     right: 0;
     left: 0;
+  }
+  .is-danger {
+    color: red!important;
+  }
+  .add-more {
+    margin-bottom: 10px;
+    color: #ffffff!important;
+    background: #307d7f!important;
+    border-color: #307d7f!important;
   }
 </style>
