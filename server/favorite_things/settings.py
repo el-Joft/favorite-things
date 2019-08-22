@@ -26,7 +26,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'daha0htt4g.execute-api.us-east-2.amazonaws.com', ]
+ALLOWED_HOSTS = ['127.0.0.1',
+                 'daha0htt4g.execute-api.us-east-2.amazonaws.com', ]
 
 # Application definition
 
@@ -127,7 +128,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ORIGIN_WHITELIST = [
-    'https://favoriteapp.netlify.com/#/',
+    'https://favoriteapp.netlify.com',
     'http://localhost:8000',
     'http://localhost:8080',
 ]
