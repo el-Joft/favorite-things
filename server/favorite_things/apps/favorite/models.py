@@ -1,6 +1,6 @@
 import uuid
-from django.contrib.postgres.fields import JSONField
 from django.db import models
+from jsonfield import JSONField
 
 
 class Category(models.Model):
