@@ -1,0 +1,14 @@
+{
+  "name": "Omotayo Timothy Fehintolu",
+  "email": "ottimothy@gmail.com",
+  "github": "https://github.com/el-Joft",
+  "mobile_number": "+2348136681130",
+  "professional_summary": "Team player and prolific full stack software developer with a can-do attitude, phenomenal time  management skills, and a strong user focus. Passionate about building world class  software applications.",
+  "interest": "Sky diving, Space Exploiration and Machine Learning",
+  "technical_expertise": {
+    "1": "I worked in a team building out an Inventory Management System called HealthID for pharmacists/chemists, Health ID helps them run their stores more efficiently and grow their business by improved targeting of promotions and value-added services. While working with the team, I worked using Python, Django, GraphQL and PostgreSQL.",
+    "2": "I have worked on several projects using Django rest framework to build a review site just like yelp.",
+    "3": "I also have 1 year + experience in working with JavaScript using Nodejs, ExpressJs, NestJS, Typescript and ReactJs in which I have built applications which with NestJS/TypeGraphQL and React.",
+    "4": "Apart from web development, I have good skills in UI/UX design using Figma, Adobe Photoshop and Sketch to create amazing web mockups and UI/UX designs."
+  }
+}
